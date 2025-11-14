@@ -141,6 +141,7 @@ cython_debug/
 .vscode/
 
 # Testing playground
-playground/
-test/repo/
-test/report/
+challenges/
+
+# Logs
+logs/

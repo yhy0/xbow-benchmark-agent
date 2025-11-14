@@ -5,12 +5,16 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "fastapi>=0.121.2",
+    "fastapi-limiter>=0.1.6",
     "fastmcp>=2.13.0.2",
     "gitpython>=3.1.45",
+    "portpicker>=1.6.0",
     "pydantic>=2.12.4",
     "requests>=2.32.5",
     "requests-ratelimiter>=0.7.0",
     "typer>=0.20.0",
+    "uvicorn>=0.38.0",
 ]
 
 [tool.bumpversion]
