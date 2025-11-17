@@ -11,6 +11,7 @@ dependencies = [
     "gitpython>=3.1.45",
     "portpicker>=1.6.0",
     "pydantic>=2.12.4",
+    "pyyaml>=6.0.2",
     "requests>=2.32.5",
     "requests-ratelimiter>=0.7.0",
     "tenacity>=9.0.0",
