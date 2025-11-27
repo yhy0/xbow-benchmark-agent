@@ -22,14 +22,16 @@
 ### 1. 准备赛题数据
 
 ```bash
-git clone [https://github.com/Neuro-Sploit/xbow-validation-benchmarks](https://github.com/Neuro-Sploit/xbow-validation-benchmarks) --branch main --depth 1 ~/xbow-validation-benchmarks
+git clone https://github.com/Neuro-Sploit/xbow-validation-benchmarks --branch main --depth 1 ~/xbow-validation-benchmarks
 ```
 
 ### 2. 启动模拟服务器
 
+![screenshot](./figures/screenshot.png)
+
 ```bash
 # 克隆仓库
-git clone [https://github.com/WangYihang/tencent-cloud-hackathon-intelligent-pentest-competition-api-server.git](https://github.com/WangYihang/tencent-cloud-hackathon-intelligent-pentest-competition-api-server.git)
+git clone https://github.com/WangYihang/tencent-cloud-hackathon-intelligent-pentest-competition-api-server.git
 cd tencent-cloud-hackathon-intelligent-pentest-competition-api-server
 
 # 安装依赖
