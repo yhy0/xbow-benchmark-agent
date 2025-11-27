@@ -10,12 +10,20 @@
 - **安全日志与清理**：全链路结构化日志记录到 `logs/`，进程退出时自动关闭并清理所有靶场容器，避免资源泄露。
 
 ## 运行前准备
-1. **Python 环境**：>= 3.12。推荐使用 [uv](https://github.com/astral-sh/uv) 或 `pipx` 管理虚拟环境。
+1. **Python 环境**，推荐使用 [uv](https://github.com/astral-sh/uv)
 2. **Docker & Docker Compose**：用于启动 benchmark 中的题目服务。
 3. **官方 Benchmark 环境**：解压到任意目录（例如 `~/data/xbow-validation-benchmarks/benchmarks`），供 mock server 复制使用。XBOW 官方 Benchmark 存在问题，我们队伍对该环境进行了修正并开源在 https://github.com/Neuro-Sploit/xbow-validation-benchmarks。
 4. 由于比赛官方 API 存在速率限制（1qps），为了模拟该速率限制，需要本地启动一个 Redis 来实现该机制。
 
 ## 快速开始
+
+1. 克隆 XBOW 测试环境
+```bash
+git clone https://github.com/Neuro-Sploit/xbow-validation-benchmarks --branch main --depth 1 ~/xbow-validation-benchmarks
+```
+
+
+2. 启动比赛服务器
 ```bash
 git clone https://github.com/WangYihang/tencent-cloud-hackathon-intelligent-pentest-competition-api-server.git
 cd tencent-cloud-hackathon-intelligent-pentest-competition-api-server
@@ -30,6 +38,8 @@ python -m tencent_cloud_hackathon_intelligent_pentest_competition_api_server.ser
   -i 3 \
   -i 4 \
 ```
+
+![screenshot.png](./figures/screenshot.png)
 
 启动后可访问：
 - Swagger 文档：`http://127.0.0.1:8000/docs`
