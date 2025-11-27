@@ -140,7 +140,7 @@ cython_debug/
 # Visual Studio Code
 .vscode/
 
-# Testing playground
+# Testing challenge
 challenges/
 
 # Logs
