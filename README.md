@@ -55,6 +55,8 @@ python -m tencent_cloud_hackathon_intelligent_pentest_competition_api_server.ser
 * **Swagger UI**: http://127.0.0.1:8000/docs
 * **运行日志**: logs/competition-platform-server-logs.jsonl
 
+![fastapi](./figures/fastapi.png)
+
 ## API 接口
 
 接口协议遵循[官方文档](https://docs.qq.com/doc/DSWRydU9zSnJhR3Rt)。
@@ -76,6 +78,8 @@ export COMPETITION_API_TOKEN=00000000-0000-0000-0000-000000000000
 
 ### 命令行工具 (CLI)
 
+![cli](./figures/cli.png)
+
 ```bash
 # 获取题目列表
 python -m tencent_cloud_hackathon_intelligent_pentest_competition_api_server.client_cli get-challenges
@@ -87,10 +91,58 @@ python -m tencent_cloud_hackathon_intelligent_pentest_competition_api_server.cli
 python -m tencent_cloud_hackathon_intelligent_pentest_competition_api_server.client_cli submit-answer <challenge_code> <flag>
 ```
 
-### SDK 与 MCP
+### Python SDK
 
 * **Python SDK**: client_sdk.APIClient 内置指数退避重试策略与速率限制处理。
+
+```bash
+pip install tencent-cloud-hackathon-intelligent-pentest-competition-api-server
+```
+
+```python
+from tencent_cloud_hackathon_intelligent_pentest_competition_api_server.client_sdk import APIClient
+
+client = APIClient(
+    base_url='http://127.0.0.1:8000',
+    api_token='00000000-0000-0000-0000-000000000000',
+)
+
+challenges = client.get_challenges()
+print(challenges)
+first_challenge_code = challenges.challenges[0].challenge_code
+print(client.get_challenge_hint(first_challenge_code))
+print(client.submit_answer(first_challenge_code, 'flag{...}'))
+```
+
+### MCP Server
+
 * **MCP Protocol**: 通过 client_mcp 模块暴露接口，支持 AI Agent 直接调用。
+
+```bash
+> python -m tencent_cloud_hackathon_intelligent_pentest_competition_api_server.client_mcp
+{"timestamp": "2025-11-27T15:57:31.881942", "level": "INFO", "message": "Initializing API client", "action": "init", "base_url": "http://localhost:8000/", "api_token": "00000000-0000-0000-0000-000000000000"}
+
+
+                                         ╭──────────────────────────────────────────────────────────────────────────────╮
+                                         │                                                                              │
+                                         │                         ▄▀▀ ▄▀█ █▀▀ ▀█▀ █▀▄▀█ █▀▀ █▀█                        │
+                                         │                         █▀  █▀█ ▄▄█  █  █ ▀ █ █▄▄ █▀▀                        │
+                                         │                                                                              │
+                                         │                                FastMCP 2.13.1                                │
+                                         │                                                                              │
+                                         │                                                                              │
+                                         │               🖥  Server name: Capture The Flag Competition API               │
+                                         │                                                                              │
+                                         │               📦 Transport:   STDIO                                          │
+                                         │                                                                              │
+                                         │               📚 Docs:        https://gofastmcp.com                          │
+                                         │               🚀 Hosting:     https://fastmcp.cloud                          │
+                                         │                                                                              │
+                                         ╰──────────────────────────────────────────────────────────────────────────────╯
+
+
+[11/27/25 15:57:31] INFO     Starting MCP server 'Capture The Flag Competition API' with transport 'stdio'
+```
 
 ## 运维说明
 
