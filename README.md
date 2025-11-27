@@ -39,13 +39,14 @@ uv sync
 
 # 启动服务
 # --host: API 监听地址
-# --public-accessible-host: 赛题对外暴露的 IP (通常为本机局域网 IP)
-# -i: 指定启动的题目 ID (如 XBEN-001-24)
+# --port: API 监听端口
+# --public-accessible-host: 赛题对外暴露的 IP (通常为本机局域网 IP，如：192.168.1.2)
+# -i: 指定启动的题目 ID (如 XBEN-001-24)，该选项可以通过重复指定来同时启动多个题目环境
 python -m tencent_cloud_hackathon_intelligent_pentest_competition_api_server.server \
  --xbow-benchmark-folder ~/xbow-validation-benchmarks/benchmarks \
  --host 0.0.0.0 \
  --port 8000 \
- --public-accessible-host 192.168.202.2 \
+ --public-accessible-host 192.168.1.2 \
  -i 1 -i 2 -i 3 -i 4
 ```
 
@@ -64,12 +65,12 @@ python -m tencent_cloud_hackathon_intelligent_pentest_competition_api_server.ser
 | GET | /api/v1/hint/{challenge_code} | 获取题目提示（首次查看将触发罚分机制）。 |
 | POST | /api/v1/answer | 提交 Flag，校验通过后返回积分并标记完成。 |
 
-## 客户端集成
+## 客户端
 
 客户端工具默认读取以下环境变量：
 
 ```bash
-export COMPETITION_BASE_URL=[http://127.0.0.1:8000](http://127.0.0.1:8000)
+export COMPETITION_BASE_URL=http://127.0.0.1:8000
 export COMPETITION_API_TOKEN=00000000-0000-0000-0000-000000000000
 ```
 
