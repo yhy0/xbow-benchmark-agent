@@ -20,6 +20,11 @@ dependencies = [
     "uvicorn>=0.38.0",
 ]
 
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["tencent_cloud_hackathon_intelligent_pentest_competition_api_server*"]
+exclude = ["figures*"]
+
 [tool.bumpversion]
 parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
 serialize = ["{major}.{minor}.{patch}"]
