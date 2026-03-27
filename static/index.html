@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Benchmark Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/dashboard.css">
+</head>
+<body>
+  <!-- Background glow blobs -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+  <div class="bg-blob blob-3"></div>
+
+  <div class="app">
+    <!-- Header -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <span class="logo">&#9876;&#65039;</span>
+        <h1>Benchmark Dashboard</h1>
+      </div>
+      <div class="top-bar-right">
+        <span class="update-badge" id="last-update">--</span>
+        <label class="switch-label">
+          <input type="checkbox" id="auto-refresh" checked>
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+          <span class="switch-text">Auto 10s</span>
+        </label>
+      </div>
+    </header>
+
+    <!-- Agent Tabs -->
+    <nav class="agent-bar" id="agent-tabs">
+      <button class="agent-chip active" data-agent="">All Agents</button>
+    </nav>
+
+    <!-- Summary Cards -->
+    <section class="cards-grid" id="summary-cards">
+      <div class="card card-solved">
+        <div class="card-icon">&#127919;</div>
+        <div class="card-body">
+          <span class="card-value" id="stat-solved">0 / 0</span>
+          <span class="card-label">Solved</span>
+        </div>
+      </div>
+      <div class="card card-score">
+        <div class="card-icon">&#11088;</div>
+        <div class="card-body">
+          <span class="card-value" id="stat-score">0</span>
+          <span class="card-label">Score</span>
+        </div>
+      </div>
+      <div class="card card-cost">
+        <div class="card-icon">&#128176;</div>
+        <div class="card-body">
+          <span class="card-value" id="stat-cost">$0.00</span>
+          <span class="card-label">Total Cost</span>
+        </div>
+      </div>
+      <div class="card card-time">
+        <div class="card-icon">&#9201;</div>
+        <div class="card-body">
+          <span class="card-value" id="stat-avg-time">--</span>
+          <span class="card-label">Avg Time</span>
+        </div>
+      </div>
+      <div class="card card-tokens">
+        <div class="card-icon">&#129520;</div>
+        <div class="card-body">
+          <span class="card-value" id="stat-tokens">0</span>
+          <span class="card-label">Tokens</span>
+        </div>
+      </div>
+      <div class="card card-running">
+        <div class="card-icon">&#9889;</div>
+        <div class="card-body">
+          <span class="card-value" id="stat-running">0</span>
+          <span class="card-label">Running</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progress -->
+    <section class="panel">
+      <div class="progress-wrap">
+        <div class="progress-header">
+          <span>Completion</span>
+          <span class="progress-pct" id="progress-pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <div class="progress-legend" id="progress-legend">
+          <span class="legend-item"><span class="dot dot-success"></span>Solved 0</span>
+          <span class="legend-item"><span class="dot dot-failure"></span>Failed 0</span>
+          <span class="legend-item"><span class="dot dot-timeout"></span>Timeout 0</span>
+          <span class="legend-item"><span class="dot dot-error"></span>Error 0</span>
+          <span class="legend-item"><span class="dot dot-running"></span>Running 0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leaderboard -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2>&#127942; Leaderboard</h2>
+      </div>
+      <div class="table-wrap">
+        <table id="leaderboard-table">
+          <thead>
+            <tr>
+              <th class="col-rank">#</th>
+              <th>Agent</th>
+              <th class="col-num">Solved</th>
+              <th class="col-num">Score</th>
+              <th class="col-num">Cost</th>
+              <th class="col-num">Tokens</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-body">
+            <tr><td colspan="6" class="empty-state">No agents yet &mdash; start a benchmark run!</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Runs Table -->
+    <section class="panel">
+      <div class="panel-header">
+        <h2 id="runs-title">&#128203; All Challenges</h2>
+      </div>
+      <div class="table-wrap">
+        <table id="runs-table">
+          <thead>
+            <tr>
+              <th class="col-rank">#</th>
+              <th>Benchmark</th>
+              <th>Agent</th>
+              <th>Status</th>
+              <th class="col-num">Duration</th>
+              <th class="col-num">Cost</th>
+              <th class="col-num">Tokens</th>
+              <th class="col-flag">Flag</th>
+            </tr>
+          </thead>
+          <tbody id="runs-body">
+            <tr><td colspan="8" class="empty-state">No runs recorded yet &mdash; waiting for data...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Benchmark Dashboard &middot; Auto-refresh <span id="footer-status">ON</span></span>
+    </footer>
+  </div>
+
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>
