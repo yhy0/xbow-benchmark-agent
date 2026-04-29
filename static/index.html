@@ -4,25 +4,27 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Benchmark Dashboard</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/dashboard.css">
 </head>
 <body>
-  <!-- Background glow blobs -->
-  <div class="bg-blob blob-1"></div>
-  <div class="bg-blob blob-2"></div>
-  <div class="bg-blob blob-3"></div>
+  <!-- Background Mesh -->
+  <div class="bg-mesh"></div>
 
   <div class="app">
     <!-- Header -->
-    <header class="top-bar">
+    <header class="top-bar glass">
       <div class="top-bar-left">
-        <span class="logo">&#9876;&#65039;</span>
+        <span class="logo">
+          <svg class="icon-svg" viewBox="0 0 24 24"><path d="M14.5 17.5L3 6V3h3l11.5 11.5"/><path d="M13 19l6-6"/><path d="M16 16l4 4"/><path d="M19 21l2-2"/></svg>
+        </span>
         <h1>Benchmark Dashboard</h1>
       </div>
       <div class="top-bar-right">
         <span class="update-badge" id="last-update">--</span>
+        <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode">
+          <svg class="icon-svg icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-svg icon-sun" viewBox="0 0 24 24" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
         <label class="switch-label">
           <input type="checkbox" id="auto-refresh" checked>
           <span class="switch-track"><span class="switch-thumb"></span></span>
@@ -31,64 +33,91 @@
       </div>
     </header>
 
-    <!-- Agent Tabs -->
+    <!-- Agent Tabs (Pill Bar) -->
     <nav class="agent-bar" id="agent-tabs">
       <button class="agent-chip active" data-agent="">All Agents</button>
     </nav>
 
     <!-- Summary Cards -->
-    <section class="cards-grid" id="summary-cards">
-      <div class="card card-solved">
-        <div class="card-icon">&#127919;</div>
-        <div class="card-body">
-          <span class="card-value" id="stat-solved">0 / 0</span>
-          <span class="card-label">Solved</span>
+    <section class="cards-grid">
+      <div class="stat-card glass" data-accent="emerald">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-card-label">Solved</div>
+            <div class="stat-card-value" id="stat-solved">0 / 0</div>
+          </div>
+          <div class="stat-card-icon icon-emerald">
+            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
         </div>
       </div>
-      <div class="card card-score">
-        <div class="card-icon">&#11088;</div>
-        <div class="card-body">
-          <span class="card-value" id="stat-score">0</span>
-          <span class="card-label">Score</span>
+      <div class="stat-card glass" data-accent="amber">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-card-label">Score</div>
+            <div class="stat-card-value" id="stat-score">0</div>
+          </div>
+          <div class="stat-card-icon icon-amber">
+            <svg class="icon-svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
         </div>
       </div>
-      <div class="card card-cost">
-        <div class="card-icon">&#128176;</div>
-        <div class="card-body">
-          <span class="card-value" id="stat-cost">$0.00</span>
-          <span class="card-label">Total Cost</span>
+      <div class="stat-card glass" data-accent="violet">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-card-label">Total Cost</div>
+            <div class="stat-card-value" id="stat-cost">$0.00</div>
+          </div>
+          <div class="stat-card-icon icon-violet">
+            <svg class="icon-svg" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
         </div>
       </div>
-      <div class="card card-time">
-        <div class="card-icon">&#9201;</div>
-        <div class="card-body">
-          <span class="card-value" id="stat-avg-time">--</span>
-          <span class="card-label">Avg Time</span>
+      <div class="stat-card glass" data-accent="blue">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-card-label">Avg Time</div>
+            <div class="stat-card-value" id="stat-avg-time">--</div>
+          </div>
+          <div class="stat-card-icon icon-blue">
+            <svg class="icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
         </div>
       </div>
-      <div class="card card-tokens">
-        <div class="card-icon">&#129520;</div>
-        <div class="card-body">
-          <span class="card-value" id="stat-tokens">0</span>
-          <span class="card-label">Tokens</span>
+      <div class="stat-card glass" data-accent="rose">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-card-label">Tokens</div>
+            <div class="stat-card-value" id="stat-tokens">0</div>
+          </div>
+          <div class="stat-card-icon icon-rose">
+            <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 0-4 4c0 2 2 3 2 6H6v2h1l1 7h8l1-7h1v-2h-4c0-3 2-4 2-6a4 4 0 0 0-4-4z"/></svg>
+          </div>
         </div>
       </div>
-      <div class="card card-running">
-        <div class="card-icon">&#9889;</div>
-        <div class="card-body">
-          <span class="card-value" id="stat-running">0</span>
-          <span class="card-label">Running</span>
+      <div class="stat-card glass" data-accent="cyan">
+        <div class="stat-card-top">
+          <div>
+            <div class="stat-card-label">Running</div>
+            <div class="stat-card-value" id="stat-running">0</div>
+          </div>
+          <div class="stat-card-icon icon-cyan">
+            <svg class="icon-svg" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Progress -->
     <section class="panel">
-      <div class="progress-wrap">
-        <div class="progress-header">
-          <span>Completion</span>
-          <span class="progress-pct" id="progress-pct">0%</span>
-        </div>
+      <div class="panel-header">
+        <h2>
+          <svg class="icon-svg" style="width:16px;height:16px" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          Completion
+          <span class="progress-pct" id="progress-pct" style="margin-left:auto">0%</span>
+        </h2>
+      </div>
+      <div style="padding:1rem 1.5rem 1.25rem">
         <div class="progress-track">
           <div class="progress-fill" id="progress-fill" style="width:0%"></div>
         </div>
@@ -105,7 +134,10 @@
     <!-- Leaderboard -->
     <section class="panel">
       <div class="panel-header">
-        <h2>&#127942; Leaderboard</h2>
+        <h2>
+          <svg class="icon-svg" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5C7 4 6 9 6 9z"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5C17 4 18 9 18 9z"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+          Leaderboard
+        </h2>
       </div>
       <div class="table-wrap">
         <table id="leaderboard-table">
@@ -120,7 +152,7 @@
             </tr>
           </thead>
           <tbody id="leaderboard-body">
-            <tr><td colspan="6" class="empty-state">No agents yet &mdash; start a benchmark run!</td></tr>
+            <tr><td colspan="6" class="empty-state">No agents yet — start a benchmark run!</td></tr>
           </tbody>
         </table>
       </div>
@@ -129,7 +161,10 @@
     <!-- Runs Table -->
     <section class="panel">
       <div class="panel-header">
-        <h2 id="runs-title">&#128203; All Challenges</h2>
+        <h2 id="runs-title">
+          <svg class="icon-svg" style="width:16px;height:16px" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          <span>All Challenges</span>
+        </h2>
       </div>
       <div class="table-wrap">
         <table id="runs-table">
@@ -146,17 +181,41 @@
             </tr>
           </thead>
           <tbody id="runs-body">
-            <tr><td colspan="8" class="empty-state">No runs recorded yet &mdash; waiting for data...</td></tr>
+            <tr><td colspan="8" class="empty-state">No runs recorded yet — waiting for data...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
     <footer class="footer">
-      <span>Benchmark Dashboard &middot; Auto-refresh <span id="footer-status">ON</span></span>
+      <span>Benchmark Dashboard · Auto-refresh <span id="footer-status">ON</span></span>
     </footer>
   </div>
 
   <script src="/static/dashboard.js"></script>
+  <script>
+    // Dark mode toggle
+    (function() {
+      const saved = localStorage.getItem('dashboard-theme');
+      if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+      const btn = document.getElementById('theme-toggle');
+      const moon = btn.querySelector('.icon-moon');
+      const sun = btn.querySelector('.icon-sun');
+      function updateIcon() {
+        const isDark = document.documentElement.classList.contains('dark');
+        moon.style.display = isDark ? 'none' : '';
+        sun.style.display = isDark ? '' : 'none';
+      }
+      updateIcon();
+      btn.addEventListener('click', function() {
+        document.documentElement.classList.toggle('dark');
+        const isDark = document.documentElement.classList.contains('dark');
+        localStorage.setItem('dashboard-theme', isDark ? 'dark' : 'light');
+        updateIcon();
+      });
+    })();
+  </script>
 </body>
 </html>

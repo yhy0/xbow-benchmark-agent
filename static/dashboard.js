@@ -8,6 +8,21 @@ let currentAgent = "";
 let refreshTimer = null;
 
 // ---------------------------------------------------------------------------
+// SVG icon helpers
+// ---------------------------------------------------------------------------
+
+const SVG = {
+  check: '<svg class="icon-svg" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>',
+  x: '<svg class="icon-svg" style="width:14px;height:14px" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  clock: '<svg class="icon-svg" style="width:14px;height:14px" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  alert: '<svg class="icon-svg" style="width:14px;height:14px" viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  loader: '<svg class="icon-svg" style="width:14px;height:14px" viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>',
+  goldMedal: '<svg style="width:18px;height:18px" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6" fill="#fbbf24" stroke="#fbbf24" stroke-width="1"/><path d="M8.5 2h7l-1.5 6h-4L8.5 2z" fill="#fbbf24" opacity="0.6"/></svg>',
+  silverMedal: '<svg style="width:18px;height:18px" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6" fill="#94a3b8" stroke="#94a3b8" stroke-width="1"/><path d="M8.5 2h7l-1.5 6h-4L8.5 2z" fill="#94a3b8" opacity="0.6"/></svg>',
+  bronzeMedal: '<svg style="width:18px;height:18px" viewBox="0 0 24 24"><circle cx="12" cy="15" r="6" fill="#d97706" stroke="#d97706" stroke-width="1"/><path d="M8.5 2h7l-1.5 6h-4L8.5 2z" fill="#d97706" opacity="0.6"/></svg>',
+};
+
+// ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
@@ -36,23 +51,27 @@ function fmtTokens(val) {
 }
 
 const STATUS_CFG = {
-  success: { icon: "\u2705", cls: "badge-success", label: "OK" },
-  failure: { icon: "\u274C", cls: "badge-failure", label: "FAIL" },
-  running: { icon: "\u23F3", cls: "badge-running", label: "RUN" },
-  timeout: { icon: "\u23F1\uFE0F", cls: "badge-timeout", label: "T/O" },
-  error:   { icon: "\u26A0\uFE0F", cls: "badge-error",  label: "ERR" },
+  success: { icon: SVG.check,  cls: "badge-success", label: "OK",   dotColor: "var(--color-success)" },
+  failure: { icon: SVG.x,     cls: "badge-failure", label: "FAIL", dotColor: "var(--color-danger)" },
+  running: { icon: SVG.loader, cls: "badge-running", label: "RUN",  dotColor: "var(--color-info)" },
+  timeout: { icon: SVG.clock, cls: "badge-timeout", label: "T/O",  dotColor: "var(--color-warning)" },
+  error:   { icon: SVG.alert, cls: "badge-error",   label: "ERR",  dotColor: "oklch(0.7 0.15 80)" },
 };
 
 function statusBadge(status) {
-  const s = STATUS_CFG[status] || { icon: "\u2B1C", cls: "badge-pending", label: status || "---" };
-  return `<span class="badge ${s.cls}">${s.icon} ${s.label}</span>`;
+  const s = STATUS_CFG[status] || { icon: "", cls: "badge-pending", label: status || "---", dotColor: "var(--color-muted-foreground)" };
+  const animate = status === "running" ? " animation: pulse 2s infinite;" : "";
+  return `<span class="badge ${s.cls}">
+    <span class="badge-dot" style="background:${s.dotColor};${animate}"></span>
+    ${s.icon} ${s.label}
+  </span>`;
 }
 
 function rankMedal(i) {
-  if (i === 0) return `<span class="rank-1">\uD83E\uDD47</span>`;
-  if (i === 1) return `<span class="rank-2">\uD83E\uDD48</span>`;
-  if (i === 2) return `<span class="rank-3">\uD83E\uDD49</span>`;
-  return `<span style="color:var(--text-muted)">${i + 1}</span>`;
+  if (i === 0) return SVG.goldMedal;
+  if (i === 1) return SVG.silverMedal;
+  if (i === 2) return SVG.bronzeMedal;
+  return `<span style="color:var(--color-muted-foreground)">${i + 1}</span>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -124,7 +143,7 @@ async function loadLeaderboard() {
   const tbody = document.getElementById("leaderboard-body");
 
   if (!data.leaderboard.length) {
-    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No agents yet &mdash; start a benchmark run!</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No agents yet — start a benchmark run!</td></tr>`;
     return;
   }
 
@@ -146,13 +165,13 @@ async function loadRuns() {
   const data = await fetchJSON(`${API}/runs${qs}`);
   const tbody = document.getElementById("runs-body");
 
-  const title = document.getElementById("runs-title");
-  title.innerHTML = currentAgent
-    ? `\uD83D\uDCCB <span class="agent-tag">${currentAgent}</span> Challenges (${data.runs.length})`
-    : `\uD83D\uDCCB All Challenges (${data.runs.length})`;
+  const titleSpan = document.querySelector("#runs-title span");
+  titleSpan.textContent = currentAgent
+    ? `${currentAgent} Challenges (${data.runs.length})`
+    : `All Challenges (${data.runs.length})`;
 
   if (!data.runs.length) {
-    tbody.innerHTML = `<tr><td colspan="8" class="empty-state">No runs recorded yet &mdash; waiting for data...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="8" class="empty-state">No runs recorded yet — waiting for data...</td></tr>`;
     return;
   }
 
@@ -167,11 +186,11 @@ async function loadRuns() {
       <td class="col-num">${fmtDuration(r.duration_seconds)}</td>
       <td class="col-num">${fmtCost(r.cost_usd)}</td>
       <td class="col-num">${fmtTokens(r.token_count)}</td>
-      <td class="col-flag">${r.found_flag ? '<span class="flag-yes">\u2713</span>' : '<span class="flag-no">-</span>'}</td>
+      <td class="col-flag">${r.found_flag ? '<span class="flag-yes">&#10003;</span>' : '<span class="flag-no">-</span>'}</td>
     </tr>`;
     if (hasError) {
       html += `<tr class="error-row" style="display:none" data-error-for="${r.id}">
-        <td colspan="8">\u26A0 ${r.error_message}</td>
+        <td colspan="8">${SVG.alert} ${r.error_message}</td>
       </tr>`;
     }
   }
@@ -197,7 +216,7 @@ async function refresh() {
       `Updated ${new Date().toLocaleTimeString()}`;
   } catch (err) {
     console.error("Dashboard refresh error:", err);
-    document.getElementById("last-update").textContent = `\u26A0 ${err.message}`;
+    document.getElementById("last-update").textContent = `Error: ${err.message}`;
   }
 }
 
